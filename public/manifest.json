@@ -1,0 +1,20 @@
+{
+  "name": "ВолнА — Музыкальный плеер",
+  "short_name": "ВолнА",
+  "description": "Музыкальный плеер с авторизацией через ВКонтакте и Одноклассники",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d0b17",
+  "theme_color": "#a855f7",
+  "orientation": "portrait-primary",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "https://cdn.poehali.dev/projects/b9fddfdc-fd71-4ea5-b60b-7c355f4d6e9f/files/98292f53-2d75-4804-bb5d-aeb961647de0.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["music", "entertainment"]
+}
