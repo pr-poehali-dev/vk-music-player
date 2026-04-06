@@ -22,41 +22,25 @@ function fmt(s: number) {
   return `${m}:${sec.toString().padStart(2, "0")}`;
 }
 
-// ─── Jamendo API ──────────────────────────────────────────────────────────────
-const JAMENDO_ID = "b1a9c428";
+// ─── Music API (via backend proxy) ────────────────────────────────────────────
+const API = "https://functions.poehali.dev/36239253-6876-4472-a682-b3cac118ef2b";
 
 async function searchTracks(query: string): Promise<Track[]> {
-  const url = `https://api.jamendo.com/v3.0/tracks/?client_id=${JAMENDO_ID}&format=json&limit=30&search=${encodeURIComponent(query)}&audioformat=mp32&include=musicinfo&imagesize=300`;
-  const res = await fetch(url);
+  const res = await fetch(`${API}?action=search&q=${encodeURIComponent(query)}&limit=30`);
   const data = await res.json();
-  if (!data.results) return [];
-  return data.results.map((t: Record<string, string | number>) => ({
-    id: String(t.id),
-    title: String(t.name),
-    artist: String(t.artist_name),
-    album: String(t.album_name || ""),
-    duration: Number(t.duration),
-    cover: String(t.image || "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop"),
-    audioUrl: String(t.audio),
-    downloadUrl: String(t.audiodownload || t.audio),
-  }));
+  return data.results || [];
 }
 
 async function getTopTracks(): Promise<Track[]> {
-  const url = `https://api.jamendo.com/v3.0/tracks/?client_id=${JAMENDO_ID}&format=json&limit=20&order=popularity_total&audioformat=mp32&imagesize=300`;
-  const res = await fetch(url);
+  const res = await fetch(`${API}?action=top&limit=20`);
   const data = await res.json();
-  if (!data.results) return [];
-  return data.results.map((t: Record<string, string | number>) => ({
-    id: String(t.id),
-    title: String(t.name),
-    artist: String(t.artist_name),
-    album: String(t.album_name || ""),
-    duration: Number(t.duration),
-    cover: String(t.image || "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop"),
-    audioUrl: String(t.audio),
-    downloadUrl: String(t.audiodownload || t.audio),
-  }));
+  return data.results || [];
+}
+
+async function getByTag(tag: string): Promise<Track[]> {
+  const res = await fetch(`${API}?action=tag&tag=${encodeURIComponent(tag)}&limit=30`);
+  const data = await res.json();
+  return data.results || [];
 }
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
